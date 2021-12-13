@@ -2,17 +2,17 @@ import { getJson, isOnionUrl, isUrl, isValidAmount } from './utils'
 import type {
   LnUrlRequestInvoiceArgs,
   LnUrlRequestInvoiceResponse,
-  LnUrlRequestInvoiceWithServieResponseArgs,
+  LnUrlrequestInvoiceWithServiceParamsArgs,
 } from './types'
 import { requestPayServiceParams } from './request-pay-service-params'
 
-export const requestInvoiceWithServieResponse = async ({
+export const requestInvoiceWithServiceParams = async ({
   params,
   amount,
   comment,
   onionAllowed = false,
   fetchGet = getJson,
-}: LnUrlRequestInvoiceWithServieResponseArgs): Promise<LnUrlRequestInvoiceResponse> => {
+}: LnUrlrequestInvoiceWithServiceParamsArgs): Promise<LnUrlRequestInvoiceResponse> => {
   const { callback, commentAllowed, min, max } = params
   if (!isValidAmount({ amount, min, max })) throw new Error('Invalid amount')
 
@@ -53,7 +53,7 @@ export const requestInvoice = async ({
     onionAllowed,
     fetchGet,
   })
-  return requestInvoiceWithServieResponse({
+  return requestInvoiceWithServiceParams({
     params,
     amount,
     comment,

@@ -40,7 +40,7 @@ export type LnUrlRequestInvoiceBaseArgs = {
   fetchGet?: (args: FetcGetArgs) => Promise<Json>
 }
 
-export type LnUrlRequestInvoiceWithServieResponseArgs =
+export type LnUrlrequestInvoiceWithServiceParamsArgs =
   LnUrlRequestInvoiceBaseArgs & {
     params: LnUrlPayServiceResponse
   }

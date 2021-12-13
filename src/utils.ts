@@ -114,8 +114,18 @@ export const isOnionUrl = (url: string | null): boolean => {
  * @return  Satoshis or null
  */
 export const checkedToSats = (value: number): Satoshis | null => {
-  if (value && value >= 0) return value as Satoshis
+  if (value && value >= 0) return toSats(value)
   return null
+}
+
+/**
+ * Cast a number to Satoshis type
+ * @method toSats
+ * @param  value number to cast
+ * @return  Satoshis
+ */
+export const toSats = (value: number): Satoshis => {
+  return value as Satoshis
 }
 
 export const isValidAmount = ({
