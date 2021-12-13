@@ -47,6 +47,7 @@
     "url": "https://github.com/GaloyMoney/lnurl-pay/issues"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "bech32": "^2.0.0"
   },
   "devDependencies": {

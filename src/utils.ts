@@ -1,26 +1,30 @@
+import { URL } from 'url'
 import { bech32 } from 'bech32'
-import type { LightningAddress } from './types'
+import type { LightningAddress, Satoshis } from './types'
+import axios from 'axios'
 
 const LNURL_REGEX =
-  /^(?:http.*[&?]lightning=|lightning:)?(lnurl1[02-9ac-hj-np-z]+)/
+  /^(?:http.*[&?]lightning=|lightning:)?(lnurl[0-9]{1,}[02-9ac-hj-np-z]+)/
 
 const LN_ADDRESS_REGEX =
   /^((?:[^<>()\[\]\\.,;:\s@"]+(?:\.[^<>()\[\]\\.,;:\s@"]+)*)|(?:".+"))@((?:\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(?:(?:[a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
+const ONION_REGEX = /^(http:\/\/[^/:@]+\.onion(?::\d{1,5})?)(\/.*)?$/
+
 /**
  * Decode a bech32 encoded url (lnurl) or lightning address and return a url
  * @method decodeUrlOrAddress
- * @param  urlOrAddress string to decode
+ * @param  lnUrlOrAddress string to decode
  * @return  plain url or null if is an invalid url or lightning address
  */
-export const decodeUrlOrAddress = (urlOrAddress: string): string | null => {
-  const bech32Url = parseLnUrl(urlOrAddress)
+export const decodeUrlOrAddress = (lnUrlOrAddress: string): string | null => {
+  const bech32Url = parseLnUrl(lnUrlOrAddress)
   if (bech32Url) {
     const decoded = bech32.decode(bech32Url, 20000)
     return Buffer.from(bech32.fromWords(decoded.words)).toString()
   }
 
-  const address = parseLightningAddress(urlOrAddress)
+  const address = parseLightningAddress(lnUrlOrAddress)
   if (address) {
     const { username, domain } = address
     const protocol = domain.match(/\.onion$/) ? 'http' : 'https'
@@ -76,4 +80,68 @@ export const parseLightningAddress = (
   if (!address) return null
   const result = LN_ADDRESS_REGEX.exec(address.toLowerCase())
   return result ? { username: result[1], domain: result[2] } : null
+}
+
+/**
+ * Verify if a string is an url
+ * @method isUrl
+ * @param  url string to validate
+ * @return  true if is an url
+ */
+export const isUrl = (url: string | null): url is string => {
+  if (!url) return false
+  try {
+    return !!new URL(url)
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Verify if a string is an onion url
+ * @method isOnionUrl
+ * @param  url string to validate
+ * @return  true if is an onion url
+ */
+export const isOnionUrl = (url: string | null): boolean => {
+  return isUrl(url) && ONION_REGEX.test(url.toLowerCase())
+}
+
+/**
+ * Parse a number to Satoshis
+ * @method checkedToSats
+ * @param  value number to parse
+ * @return  Satoshis or null
+ */
+export const checkedToSats = (value: number): Satoshis | null => {
+  if (value && value >= 0) return value as Satoshis
+  return null
+}
+
+export const isValidAmount = ({
+  amount,
+  min,
+  max,
+}: {
+  amount: number
+  min: number
+  max: number
+}): boolean => {
+  const isValid = amount > 0 && amount >= min && amount <= max
+  const isFixed = min === max
+  return isValid && isFixed ? amount === min : isValid
+}
+
+export const getJson = async ({
+  url,
+  params,
+}: {
+  url: string
+  params?: { [key: string]: string | number }
+}): Promise<{ [key: string]: string | number }> => {
+  return axios.get(url, { params }).then((response) => {
+    if (response.data.status === 'ERROR')
+      throw new Error(response.data.reason + '')
+    return response.data
+  })
 }

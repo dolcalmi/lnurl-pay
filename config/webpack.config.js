@@ -26,5 +26,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js', '.tsx', '.jsx'],
+    fallback: { url: false },
   },
 }

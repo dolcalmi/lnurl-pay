@@ -1,24 +1,5 @@
-import { isLightningAddress, parseLightningAddress } from '../src/utils'
-
-const validLnAddresses = [
-  'user@domain.com',
-  'user.name@domain.com',
-  'u@sub.domain.com',
-]
-const invalidLnAddresses = [
-  ' user@domain.com',
-  'user@domain.com ',
-  'user @domain.com',
-  'user@ domain.com',
-  'user@domain. com',
-  'user@domain',
-  'user@dom@ain.com',
-  '@domain',
-  'user@',
-  '@',
-  'word',
-  'user@facebookwkhpilnemxj7asaniu7vnjjbiltxjqhye3mhbshg7kx5tfyd.onion,',
-]
+import { isLightningAddress, parseLightningAddress } from '../../src/utils'
+import { invalidLnAddresses, validLnAddresses } from './helper'
 
 describe('isLightningAddress', () => {
   test.each(validLnAddresses)('%s is valid lightning address', (address) => {
