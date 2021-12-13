@@ -19,7 +19,7 @@ import { requestInvoice } from 'lnurl-pay'
 
 const { invoice, params, successAction } = await requestInvoice({
   lnUrlOrAddress: 'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
-  amount: 333, // satoshis
+  tokens: 333, // satoshis
 })
 ```
 
@@ -29,7 +29,7 @@ import { requestInvoice } from 'lnurl-pay'
 
 const { invoice, params, successAction } = await requestInvoice({
   lnUrlOrAddress: 'user@domain.com',
-  amount: 333, // satoshis
+  tokens: 333, // satoshis
 })
 ```
 
@@ -44,3 +44,106 @@ const { invoice, params, successAction } = await requestInvoice({
 - [isLightningAddress](#isLightningAddress) - Verify if a string is a lightning adress
 - [parseLightningAddress](#parseLightningAddress) - Parse an address and return username and domain
 - [isOnionUrl](#isOnionUrl) - Verify if a string is an onion url
+
+### requestInvoice
+
+Request an invoice for lnurl o lightning address
+```
+    {
+      lnUrlOrAddress: <Bech32 encoded url (lnurl) or lightning address String>
+      tokens: <Amount in satoshis Number>
+      [comment]: <Comment String>
+      [onionAllowed]: <Onion url allowed Bool> // Default to false
+      [fetchGet]: <Function to make a GET request Function> // Default to axios get
+    }
+
+    @throws <Error>
+
+    @returns
+    {
+      invoice: <Invoice returned by pay service String>
+      successAction: <Success action defined by lnurl-rfc Object>
+      params: {
+        callback: <Url used to request the invoice String>
+        fixed: <Indicates if amount must be a fixed amount Bool>
+        min: <Min amount in satoshis Number>
+        max: <Max amount in satoshis Number>
+        domain: <Callback domain String>
+        metadata: <Decoded metadata Array>
+        identifier: <Metadata identifier String>
+        description: <Metadata description String>
+        image: <Metadata base64 image String>
+        commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
+      }
+    }
+```
+
+Example:
+
+```node
+const { invoice, params, successAction } = await requestInvoice({
+  lnUrlOrAddress: 'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
+  tokens: 333,
+})
+```
+
+## Test
+
+Test with Jest framework:
+
+```bash
+yarn test
+```
+
+## Build
+
+Build production (distribution) files in **dist** folder:
+
+```bash
+yarn build
+```
+
+It generates CommonJS (in **dist/cjs** folder), ES Modules (in **dist/esm** folder), bundled and minified UMD (in **dist/umd** folder), as well as TypeScript declaration files (in **dist/types** folder).
+
+## Local development
+
+Run:
+
+```bash
+yarn link
+# or
+npm link
+```
+
+and in your test project run:
+
+```bash
+yarn link lnurl-pay
+# or
+npm link lnurl-pay
+```
+
+If you want to remove the symlink, run:
+```bash
+# in your test project
+yarn unlink lnurl-pay
+# or
+npm unlink lnurl-pay
+
+# in lnurl-pay folder
+yarn unlink
+# or
+npm unlink
+```
+
+Please check more details in [npm link](https://docs.npmjs.com/cli/v6/commands/npm-link) or [yarn link](https://yarnpkg.com/cli/link)
+
+## References
+
+This library was developed based on:
+
+- [lnurl-rfc](https://github.com/fiatjaf/lnurl-rfc)
+- [js-lnurl](https://github.com/fiatjaf/js-lnurl)
+- [Lightning Address](https://github.com/andrerfneves/lightning-address)
+- [BlueWallet](https://github.com/BlueWallet/BlueWallet)
+- [Example TypeScript Package ](https://github.com/tomchen/example-typescript-package)

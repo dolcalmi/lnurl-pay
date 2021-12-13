@@ -34,7 +34,7 @@ export type LnUrlPayServiceResponse = {
 }
 
 export type LnUrlRequestInvoiceBaseArgs = {
-  amount: Satoshis
+  tokens: Satoshis
   comment?: string
   onionAllowed?: boolean
   fetchGet?: (args: FetcGetArgs) => Promise<Json>

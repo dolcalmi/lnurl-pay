@@ -8,20 +8,20 @@ import { requestPayServiceParams } from './request-pay-service-params'
 
 export const requestInvoiceWithServiceParams = async ({
   params,
-  amount,
+  tokens,
   comment,
   onionAllowed = false,
   fetchGet = getJson,
 }: LnUrlrequestInvoiceWithServiceParamsArgs): Promise<LnUrlRequestInvoiceResponse> => {
   const { callback, commentAllowed, min, max } = params
-  if (!isValidAmount({ amount, min, max })) throw new Error('Invalid amount')
+  if (!isValidAmount({ amount: tokens, min, max })) throw new Error('Invalid amount')
 
   if (!isUrl(callback)) throw new Error('Callback must be a valid url')
   if (!onionAllowed && isOnionUrl(callback))
     throw new Error('Onion requests not allowed')
 
   const invoiceParams: { amount: number; comment?: string } = {
-    amount: amount * 1000,
+    amount: tokens * 1000,
   }
 
   if (comment && commentAllowed > 0 && comment.length > commentAllowed)
@@ -43,7 +43,7 @@ export const requestInvoiceWithServiceParams = async ({
 
 export const requestInvoice = async ({
   lnUrlOrAddress,
-  amount,
+  tokens,
   comment,
   onionAllowed = false,
   fetchGet = getJson,
@@ -55,7 +55,7 @@ export const requestInvoice = async ({
   })
   return requestInvoiceWithServiceParams({
     params,
-    amount,
+    tokens,
     comment,
     onionAllowed,
     fetchGet,
