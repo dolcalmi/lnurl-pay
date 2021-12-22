@@ -5,6 +5,7 @@ Client library for lnurl-pay and lightning address
 ## Installation
 
 Install the package with:
+
 ```bash
 npm i lnurl-pay
 # or
@@ -14,17 +15,20 @@ yarn add lnurl-pay
 ## Usage
 
 ### LNURL
-``` js
+
+```js
 import { requestInvoice } from 'lnurl-pay'
 
 const { invoice, params, successAction } = await requestInvoice({
-  lnUrlOrAddress: 'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
+  lnUrlOrAddress:
+    'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
   tokens: 333, // satoshis
 })
 ```
 
 ### Lightning Address
-``` js
+
+```js
 import { requestInvoice } from 'lnurl-pay'
 
 const { invoice, params, successAction } = await requestInvoice({
@@ -48,6 +52,7 @@ const { invoice, params, successAction } = await requestInvoice({
 ### requestInvoice
 
 Request an invoice for lnurl o lightning address
+
 ```
     {
       lnUrlOrAddress: <Bech32 encoded url (lnurl) or lightning address String>
@@ -82,7 +87,8 @@ Example:
 
 ```node
 const { invoice, params, successAction } = await requestInvoice({
-  lnUrlOrAddress: 'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
+  lnUrlOrAddress:
+    'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
   tokens: 333,
 })
 ```
@@ -124,6 +130,7 @@ npm link lnurl-pay
 ```
 
 If you want to remove the symlink, run:
+
 ```bash
 # in your test project
 yarn unlink lnurl-pay

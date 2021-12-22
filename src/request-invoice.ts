@@ -14,7 +14,8 @@ export const requestInvoiceWithServiceParams = async ({
   fetchGet = getJson,
 }: LnUrlrequestInvoiceWithServiceParamsArgs): Promise<LnUrlRequestInvoiceResponse> => {
   const { callback, commentAllowed, min, max } = params
-  if (!isValidAmount({ amount: tokens, min, max })) throw new Error('Invalid amount')
+  if (!isValidAmount({ amount: tokens, min, max }))
+    throw new Error('Invalid amount')
 
   if (!isUrl(callback)) throw new Error('Callback must be a valid url')
   if (!onionAllowed && isOnionUrl(callback))
