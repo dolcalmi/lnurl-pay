@@ -7,10 +7,10 @@ jest.mock('axios')
 describe('requestPayServiceParams', () => {
   test.each(validPayServiceParams)(
     '$lnUrlOrAddress returns valid params',
-    async ({ lnUrlOrAddress, data, expected }) => {
+    async ({ lnUrlOrAddress, serviceParams: data, serviceParamsExpected }) => {
       axios.get = jest.fn().mockResolvedValueOnce({ data })
       const result = await requestPayServiceParams({ lnUrlOrAddress })
-      expect(result).toMatchObject(expected)
+      expect(result).toMatchObject(serviceParamsExpected)
     }
   )
 })
