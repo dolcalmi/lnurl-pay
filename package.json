@@ -23,7 +23,7 @@
     "package": "yarn build && yarn pack",
     "test": "jest --no-cache --runInBand",
     "test:cov": "jest --coverage --no-cache --runInBand",
-    "addscope": "node tools/packagejson name @galoy/lnurl-pay"
+    "addscope": "node tools/packagejson name @dolcalmi/lnurl-pay"
   },
   "publishConfig": {
     "access": "public"
@@ -38,13 +38,13 @@
     "lnurl-pay"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/GaloyMoney/lnurl-pay",
+  "homepage": "https://github.com/dolcalmi/lnurl-pay",
   "repository": {
     "type": "git",
-    "url": "git@github.com:GaloyMoney/lnurl-pay.git"
+    "url": "git@github.com:dolcalmi/lnurl-pay.git"
   },
   "bugs": {
-    "url": "https://github.com/GaloyMoney/lnurl-pay/issues"
+    "url": "https://github.com/dolcalmi/lnurl-pay/issues"
   },
   "dependencies": {
     "axios": "^0.24.0",

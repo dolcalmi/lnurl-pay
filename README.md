@@ -48,33 +48,33 @@ const { invoice, params, successAction } = await requestInvoice({
 Request an invoice for lnurl o lightning address
 
 ```
-    {
-      lnUrlOrAddress: <Bech32 encoded url (lnurl) or lightning address String>
-      tokens: <Amount in satoshis Number>
-      [comment]: <Comment String>
-      [onionAllowed]: <Onion url allowed Bool> // Default to false
-      [fetchGet]: <Function to make a GET request Function> // Default to axios get
-    }
+{
+  lnUrlOrAddress: <Bech32 encoded url (lnurl) or lightning address String>
+  tokens: <Amount in satoshis Number>
+  [comment]: <Comment String>
+  [onionAllowed]: <Onion url allowed Bool> // Default to false
+  [fetchGet]: <Function to make a GET request Function> // Default to axios get
+}
 
-    @throws <Error>
+@throws <Error>
 
-    @returns
-    {
-      invoice: <Invoice returned by pay service String>
-      successAction: <Success action defined by lnurl-rfc Object>
-      params: {
-        callback: <Url used to request the invoice String>
-        fixed: <Indicates if amount must be a fixed amount Bool>
-        min: <Min amount in satoshis Number>
-        max: <Max amount in satoshis Number>
-        domain: <Callback domain String>
-        metadata: <Decoded metadata Array>
-        identifier: <Metadata identifier String>
-        description: <Metadata description String>
-        image: <Metadata base64 image String>
-        commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
-      }
-    }
+@returns
+{
+  invoice: <Invoice returned by pay service String>
+  successAction: <Success action defined by lnurl-rfc Object>
+  params: {
+    callback: <Url used to request the invoice String>
+    fixed: <Indicates if amount must be a fixed amount Bool>
+    min: <Min amount in satoshis Number>
+    max: <Max amount in satoshis Number>
+    domain: <Callback domain String>
+    metadata: <Decoded metadata Array>
+    identifier: <Metadata identifier String>
+    description: <Metadata description String>
+    image: <Metadata base64 image String>
+    commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
+  }
+}
 ```
 
 Example:
@@ -83,6 +83,97 @@ Example:
 const { invoice, params, successAction } = await requestInvoice({
   lnUrlOrAddress:
     'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
+  tokens: 333,
+})
+```
+
+### requestPayServiceParams
+
+Request pay service params for lnurl o lightning address (1st step)
+
+```
+{
+  lnUrlOrAddress: <Bech32 encoded url (lnurl) or lightning address String>
+  [onionAllowed]: <Onion url allowed Bool> // Default to false
+  [fetchGet]: <Function to make a GET request Function> // Default to axios get
+}
+
+@throws <Error>
+
+@returns
+{
+  callback: <Url used to request the invoice String>
+  fixed: <Indicates if amount must be a fixed amount Bool>
+  min: <Min amount in satoshis Number>
+  max: <Max amount in satoshis Number>
+  domain: <Callback domain String>
+  metadata: <Decoded metadata Array>
+  identifier: <Metadata identifier String>
+  description: <Metadata description String>
+  image: <Metadata base64 image String>
+  commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
+}
+```
+
+Example:
+
+```node
+const params = await requestPayServiceParams({
+  lnUrlOrAddress:
+    'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
+})
+```
+
+### requestInvoiceWithServiceParams
+
+Request an invoice for lnurl o lightning address with the given service params (2nd step)
+
+```
+{
+  params: {
+    callback: <Url used to request the invoice String>
+    fixed: <Indicates if amount must be a fixed amount Bool>
+    min: <Min amount in satoshis Number>
+    max: <Max amount in satoshis Number>
+    domain: <Callback domain String>
+    metadata: <Decoded metadata Array>
+    identifier: <Metadata identifier String>
+    description: <Metadata description String>
+    image: <Metadata base64 image String>
+    commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
+  }
+  tokens: <Amount in satoshis Number>
+  [comment]: <Comment String>
+  [onionAllowed]: <Onion url allowed Bool> // Default to false
+  [fetchGet]: <Function to make a GET request Function> // Default to axios get
+}
+
+@throws <Error>
+
+@returns
+{
+  invoice: <Invoice returned by pay service String>
+  successAction: <Success action defined by lnurl-rfc Object>
+  params: {
+    callback: <Url used to request the invoice String>
+    fixed: <Indicates if amount must be a fixed amount Bool>
+    min: <Min amount in satoshis Number>
+    max: <Max amount in satoshis Number>
+    domain: <Callback domain String>
+    metadata: <Decoded metadata Array>
+    identifier: <Metadata identifier String>
+    description: <Metadata description String>
+    image: <Metadata base64 image String>
+    commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
+  }
+}
+```
+
+Example:
+
+```node
+const params = await requestInvoiceWithServiceParams({
+  params,
   tokens: 333,
 })
 ```
