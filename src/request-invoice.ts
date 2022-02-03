@@ -1,5 +1,6 @@
-import { getJson, isOnionUrl, isUrl, isValidAmount } from './utils'
+import { decipherAES, getJson, isOnionUrl, isUrl, isValidAmount } from './utils'
 import type {
+  LNURLPaySuccessAction,
   LnUrlRequestInvoiceArgs,
   LnUrlRequestInvoiceResponse,
   LnUrlrequestInvoiceWithServiceParamsArgs,
@@ -35,10 +36,17 @@ export const requestInvoiceWithServiceParams = async ({
   const invoice = data && data.pr && data.pr.toString()
   if (!invoice) throw new Error('Invalid pay service invoice')
 
+  let successAction: LNURLPaySuccessAction | undefined = undefined
+  if (data.successAction) {
+    const decipher = (preimage: string): string | null =>
+      decipherAES({ preimage, successAction: data.successAction })
+    successAction = Object.assign({ decipher }, data.successAction)
+  }
+
   return {
     params,
     invoice,
-    successAction: data.successAction,
+    successAction,
   }
 }
 

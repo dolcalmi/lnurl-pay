@@ -1,7 +1,9 @@
 import { URL } from 'url'
 import { bech32 } from 'bech32'
-import type { LightningAddress, Satoshis } from './types'
 import axios from 'axios'
+import aesjs from 'aes-js'
+import Base64 from 'base64-js'
+import type { LightningAddress, LNURLPaySuccessAction, Satoshis } from './types'
 
 const LNURL_REGEX =
   /^(?:http.*[&?]lightning=|lightning:)?(lnurl[0-9]{1,}[02-9ac-hj-np-z]+)/
@@ -154,4 +156,34 @@ export const getJson = async ({
       throw new Error(response.data.reason + '')
     return response.data
   })
+}
+
+export const decipherAES = ({
+  successAction,
+  preimage,
+}: {
+  successAction: LNURLPaySuccessAction
+  preimage: string
+}): string | null => {
+  if (
+    successAction.tag !== 'aes' ||
+    !successAction.iv ||
+    !successAction.ciphertext ||
+    !preimage
+  )
+    return null
+
+  const key = aesjs.utils.hex.toBytes(preimage)
+  const iv = Base64.toByteArray(successAction.iv)
+  const ciphertext = Base64.toByteArray(successAction.ciphertext)
+
+  const cbc = new aesjs.ModeOfOperation.cbc(key, iv)
+  let plaintext = cbc.decrypt(ciphertext)
+
+  // remove padding
+  const size = plaintext.length
+  const pad = plaintext[size - 1]
+  plaintext = plaintext.slice(0, size - pad)
+
+  return aesjs.utils.utf8.fromBytes(plaintext)
 }
