@@ -3,6 +3,9 @@ import { bech32 } from 'bech32'
 import axios from 'axios'
 import aesjs from 'aes-js'
 import Base64 from 'base64-js'
+import * as bolt11 from 'bolt11'
+import * as crypto from 'crypto'
+
 import type { LightningAddress, LNURLPaySuccessAction, Satoshis } from './types'
 
 const LNURL_REGEX =
@@ -156,6 +159,47 @@ export const getJson = async ({
       throw new Error(response.data.reason + '')
     return response.data
   })
+}
+
+export const sha256 = (data: string) =>
+  crypto.createHash('sha256').update(data, 'hex').digest('hex')
+
+export const getHashFromInvoice = (invoice: string): string | null => {
+  if (!invoice) return null
+
+  try {
+    const decoded = bolt11.decode(invoice)
+    if (!decoded.tags) return null
+
+    const hashTag = decoded.tags.find(
+      (value) => value.tagName === 'payment_hash'
+    )
+    if (!hashTag || !hashTag.data) return null
+
+    return hashTag.data.toString()
+  } catch {
+    return null
+  }
+}
+
+export const isValidPreimage = ({
+  invoice,
+  preimage,
+}: {
+  invoice: string
+  preimage: string
+}): boolean => {
+  if (!invoice || !preimage) return false
+
+  const invoiceHash = getHashFromInvoice(invoice)
+  if (!invoiceHash) return false
+
+  try {
+    const preimageHash = sha256(preimage)
+    return invoiceHash === preimageHash
+  } catch {
+    return false
+  }
 }
 
 export const decipherAES = ({

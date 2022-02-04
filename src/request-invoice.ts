@@ -1,4 +1,11 @@
-import { decipherAES, getJson, isOnionUrl, isUrl, isValidAmount } from './utils'
+import {
+  decipherAES,
+  getJson,
+  isOnionUrl,
+  isUrl,
+  isValidAmount,
+  isValidPreimage,
+} from './utils'
 import type {
   LNURLPaySuccessAction,
   LnUrlRequestInvoiceArgs,
@@ -47,6 +54,8 @@ export const requestInvoiceWithServiceParams = async ({
     params,
     invoice,
     successAction,
+    isValidPreimage: (preimage: string): boolean =>
+      isValidPreimage({ invoice, preimage }),
   }
 }
 
