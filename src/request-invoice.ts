@@ -54,7 +54,7 @@ export const requestInvoiceWithServiceParams = async ({
     params,
     invoice,
     successAction,
-    isValidPreimage: (preimage: string): boolean =>
+    validatePreimage: (preimage: string): boolean =>
       isValidPreimage({ invoice, preimage }),
   }
 }

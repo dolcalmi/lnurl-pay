@@ -63,5 +63,5 @@ export type LnUrlRequestInvoiceResponse = {
   params: LnUrlPayServiceResponse
   invoice: string
   successAction?: LNURLPaySuccessAction
-  isValidPreimage: (preimage: string) => boolean
+  validatePreimage: (preimage: string) => boolean
 }

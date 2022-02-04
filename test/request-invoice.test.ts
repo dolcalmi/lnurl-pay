@@ -14,6 +14,7 @@ describe('requestInvoice', () => {
       serviceParams,
       serviceParamsExpected,
       serviceInvoice,
+      preimage,
     }) => {
       axios.get = jest
         .fn()
@@ -28,6 +29,7 @@ describe('requestInvoice', () => {
         successAction: serviceInvoice.successAction,
         params: { ...serviceParamsExpected },
       })
+      expect(result.validatePreimage(preimage)).toBeTruthy()
     }
   )
 
