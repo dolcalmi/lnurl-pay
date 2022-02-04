@@ -19,7 +19,7 @@ yarn add lnurl-pay
 ```js
 import { requestInvoice } from 'lnurl-pay'
 
-const { invoice, params, successAction } = await requestInvoice({
+const { invoice, params, successAction, isValidPreimage } = await requestInvoice({
   lnUrlOrAddress:
     'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
   tokens: 333, // satoshis
@@ -31,7 +31,7 @@ const { invoice, params, successAction } = await requestInvoice({
 ```js
 import { requestInvoice } from 'lnurl-pay'
 
-const { invoice, params, successAction } = await requestInvoice({
+const { invoice, params, successAction, isValidPreimage } = await requestInvoice({
   lnUrlOrAddress: 'user@domain.com',
   tokens: 333, // satoshis
 })
@@ -74,6 +74,7 @@ Request an invoice for lnurl o lightning address
     image: <Metadata base64 image String>
     commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
   }
+  isValidPreimage: <validates if preimage param is valid for invoice Function> // (preimage: string) => boolean
 }
 ```
 
@@ -166,6 +167,7 @@ Request an invoice for lnurl o lightning address with the given service params (
     image: <Metadata base64 image String>
     commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
   }
+  isValidPreimage: <validates if preimage param is valid for invoice Function> // (preimage: string) => boolean
 }
 ```
 
@@ -186,6 +188,9 @@ const params = await requestInvoiceWithServiceParams({
 - [isLightningAddress](#isLightningAddress) - Verify if a string is a lightning adress
 - [parseLightningAddress](#parseLightningAddress) - Parse an address and return username and domain
 - [isOnionUrl](#isOnionUrl) - Verify if a string is an onion url
+- [getHashFromInvoice](#getHashFromInvoice) - Decodes an invoice(string) and get the hash
+- [isValidPreimage](#isValidPreimage) - Returns true if the given preimage is valid for invoice
+- [decipherAES](#decipherAES) - Decipher ciphertext with a preimage
 
 ## Test
 
