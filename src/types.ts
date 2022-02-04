@@ -9,6 +9,16 @@ export type LightningAddress = {
   domain: string
 }
 
+export type LNURLPaySuccessAction = {
+  tag: string
+  description: string | null
+  url: string | null
+  message: string | null
+  ciphertext: string | null
+  iv: string | null
+  decipher: (preimage: string) => string | null
+}
+
 export type FetcGetArgs = {
   url: string
   params?: Json
@@ -52,5 +62,6 @@ export type LnUrlRequestInvoiceArgs = LnUrlRequestInvoiceBaseArgs & {
 export type LnUrlRequestInvoiceResponse = {
   params: LnUrlPayServiceResponse
   invoice: string
-  successAction?: Json
+  successAction?: LNURLPaySuccessAction
+  validatePreimage: (preimage: string) => boolean
 }

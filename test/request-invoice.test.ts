@@ -14,6 +14,7 @@ describe('requestInvoice', () => {
       serviceParams,
       serviceParamsExpected,
       serviceInvoice,
+      preimage,
     }) => {
       axios.get = jest
         .fn()
@@ -28,16 +29,13 @@ describe('requestInvoice', () => {
         successAction: serviceInvoice.successAction,
         params: { ...serviceParamsExpected },
       })
+      expect(result.validatePreimage(preimage)).toBeTruthy()
     }
   )
 
   test.each(validPayServiceParams)(
     '$lnUrlOrAddress throws with invalid amount',
-    async ({
-      lnUrlOrAddress,
-      serviceParams,
-      serviceInvoice,
-    }) => {
+    async ({ lnUrlOrAddress, serviceParams, serviceInvoice }) => {
       axios.get = jest
         .fn()
         .mockResolvedValueOnce({ data: serviceParams })

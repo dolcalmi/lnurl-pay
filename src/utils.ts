@@ -1,7 +1,12 @@
 import { URL } from 'url'
 import { bech32 } from 'bech32'
-import type { LightningAddress, Satoshis } from './types'
 import axios from 'axios'
+import aesjs from 'aes-js'
+import Base64 from 'base64-js'
+import * as bolt11 from 'bolt11'
+import * as crypto from 'crypto'
+
+import type { LightningAddress, LNURLPaySuccessAction, Satoshis } from './types'
 
 const LNURL_REGEX =
   /^(?:http.*[&?]lightning=|lightning:)?(lnurl[0-9]{1,}[02-9ac-hj-np-z]+)/
@@ -154,4 +159,75 @@ export const getJson = async ({
       throw new Error(response.data.reason + '')
     return response.data
   })
+}
+
+export const sha256 = (data: string) =>
+  crypto.createHash('sha256').update(data, 'hex').digest('hex')
+
+export const getHashFromInvoice = (invoice: string): string | null => {
+  if (!invoice) return null
+
+  try {
+    const decoded = bolt11.decode(invoice)
+    if (!decoded.tags) return null
+
+    const hashTag = decoded.tags.find(
+      (value) => value.tagName === 'payment_hash'
+    )
+    if (!hashTag || !hashTag.data) return null
+
+    return hashTag.data.toString()
+  } catch {
+    return null
+  }
+}
+
+export const isValidPreimage = ({
+  invoice,
+  preimage,
+}: {
+  invoice: string
+  preimage: string
+}): boolean => {
+  if (!invoice || !preimage) return false
+
+  const invoiceHash = getHashFromInvoice(invoice)
+  if (!invoiceHash) return false
+
+  try {
+    const preimageHash = sha256(preimage)
+    return invoiceHash === preimageHash
+  } catch {
+    return false
+  }
+}
+
+export const decipherAES = ({
+  successAction,
+  preimage,
+}: {
+  successAction: LNURLPaySuccessAction
+  preimage: string
+}): string | null => {
+  if (
+    successAction.tag !== 'aes' ||
+    !successAction.iv ||
+    !successAction.ciphertext ||
+    !preimage
+  )
+    return null
+
+  const key = aesjs.utils.hex.toBytes(preimage)
+  const iv = Base64.toByteArray(successAction.iv)
+  const ciphertext = Base64.toByteArray(successAction.ciphertext)
+
+  const cbc = new aesjs.ModeOfOperation.cbc(key, iv)
+  let plaintext = cbc.decrypt(ciphertext)
+
+  // remove padding
+  const size = plaintext.length
+  const pad = plaintext[size - 1]
+  plaintext = plaintext.slice(0, size - pad)
+
+  return aesjs.utils.utf8.fromBytes(plaintext)
 }
