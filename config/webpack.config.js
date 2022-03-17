@@ -1,3 +1,4 @@
+const webpack = require("webpack")
 const path = require('path')
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist/umd'),
     filename: 'index.js',
-    library: 'exampleTypescriptPackage',
+    library: 'LnurlPay',
     libraryTarget: 'umd',
     globalObject: 'this',
   },
@@ -14,7 +15,7 @@ module.exports = {
     rules: [
       {
         test: /\.ts(x*)?$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!(string_decoder)\/).*/,
         use: {
           loader: 'ts-loader',
           options: {
@@ -33,4 +34,9 @@ module.exports = {
       "url": require.resolve("url/")
     },
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+  ]
 }
