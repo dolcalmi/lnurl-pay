@@ -1,4 +1,4 @@
-import { URL } from 'url'
+import isURL from 'is-url'
 import { bech32 } from 'bech32'
 import axios from 'axios'
 import aesjs from 'aes-js'
@@ -96,7 +96,7 @@ export const parseLightningAddress = (
 export const isUrl = (url: string | null): url is string => {
   if (!url) return false
   try {
-    return !!new URL(url)
+    return isURL(url)
   } catch {
     return false
   }
