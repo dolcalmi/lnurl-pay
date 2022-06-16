@@ -11,7 +11,7 @@
     "eslint-fix": "eslint \"{src,test}/**/*.ts\" --fix",
     "prettier-check": "prettier --check .",
     "prettier-write": "prettier --write .",
-    "postinstall": "husky install",
+    "postinstall": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
     "build": "yarn build:cjs && yarn build:esm && yarn build:umd && yarn build:types",
@@ -47,15 +47,16 @@
     "url": "https://github.com/dolcalmi/lnurl-pay/issues"
   },
   "dependencies": {
+    "@aws-crypto/sha256-js": "^2.0.1",
     "aes-js": "^3.1.2",
     "axios": "^0.27.2",
     "base64-js": "^1.5.1",
     "bech32": "^2.0.0",
     "bolt11": "^1.4.0",
     "buffer": "^6.0.3",
-    "crypto-browserify": "^3.12.0",
     "is-url": "^1.2.4",
-    "stream-browserify": "^3.0.0"
+    "stream-browserify": "^3.0.0",
+    "tslib": "^2.4.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",

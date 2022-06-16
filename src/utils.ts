@@ -4,7 +4,7 @@ import axios from 'axios'
 import aesjs from 'aes-js'
 import Base64 from 'base64-js'
 import * as bolt11 from 'bolt11'
-import * as crypto from 'crypto'
+import { Sha256 } from '@aws-crypto/sha256-js'
 
 import type { LightningAddress, LNURLPaySuccessAction, Satoshis } from './types'
 
@@ -161,8 +161,11 @@ export const getJson = async ({
   })
 }
 
-export const sha256 = (data: string) =>
-  crypto.createHash('sha256').update(data, 'hex').digest('hex')
+export const sha256 = (data: string) => {
+  const sha256 = new Sha256()
+  sha256.update(Buffer.from(data, 'hex'))
+  return Buffer.from(sha256.digestSync()).toString('hex')
+}
 
 export const getHashFromInvoice = (invoice: string): string | null => {
   if (!invoice) return null
