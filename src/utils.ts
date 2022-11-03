@@ -70,7 +70,7 @@ export const isLnurl = (url: string): boolean => {
  */
 export const isLightningAddress = (address: string): boolean => {
   if (!address) return false
-  return LN_ADDRESS_REGEX.test(address.toLowerCase())
+  return LN_ADDRESS_REGEX.test(address)
 }
 
 /**
@@ -83,7 +83,7 @@ export const parseLightningAddress = (
   address: string
 ): LightningAddress | null => {
   if (!address) return null
-  const result = LN_ADDRESS_REGEX.exec(address.toLowerCase())
+  const result = LN_ADDRESS_REGEX.exec(address)
   return result ? { username: result[1], domain: result[2] } : null
 }
 
