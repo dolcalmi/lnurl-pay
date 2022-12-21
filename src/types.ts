@@ -37,10 +37,12 @@ export type LnUrlPayServiceResponse = {
   max: Satoshis
   domain?: string
   metadata: Array<Array<string>>
+  metadataHash: string
   identifier: string
   description: string
   image: string
   commentAllowed: number
+  rawData: { [key: string]: string | number }
 }
 
 export type LnUrlRequestInvoiceBaseArgs = {

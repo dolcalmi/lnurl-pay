@@ -31,6 +31,8 @@ export const validPayServiceParams = [
         ['text/plain', 'Payment to user0'],
         ['text/identifier', 'user0@pay.staging.galoy.io'],
       ],
+      metadataHash:
+        'ad2c140d48fb958bc57d6d92536eedf2b21f6e3128c858cc27117b48a6d33abe',
       min: 1,
     },
   },
@@ -60,12 +62,14 @@ export const validPayServiceParams = [
       fixed: true,
       identifier: 'user11@pay.staging.galoy.io',
       image: '',
+      min: 10,
       max: 10,
       metadata: [
         ['text/plain', 'Payment to user11'],
         ['text/identifier', 'user11@pay.staging.galoy.io'],
       ],
-      min: 10,
+      metadataHash:
+        '382190a9edf28041fa43931f9f047c04252be80d6ae6483407fa3711df6d4152',
     },
   },
 ]
