@@ -5,6 +5,7 @@ import {
   checkedToSats,
   getJson,
   isUrl,
+  sha256,
 } from './utils'
 
 const TAG_PAY_REQUEST = 'payRequest'
@@ -45,10 +46,13 @@ const parseLnUrlPayServiceResponse = (data: {
   if (!(min && max) || min > max) return null
 
   let metadata: Array<Array<string>>
+  let metadataHash: string
   try {
     metadata = JSON.parse(data.metadata + '')
+    metadataHash = sha256(data.metadata + '', 'utf8')
   } catch {
     metadata = []
+    metadataHash = sha256('[]', 'utf8')
   }
 
   let image = ''
@@ -77,10 +81,12 @@ const parseLnUrlPayServiceResponse = (data: {
     min,
     max,
     domain: (domainMatch && domainMatch[0]) || undefined,
-    metadata: metadata,
+    metadata,
+    metadataHash,
     identifier,
     description,
     image,
     commentAllowed: Number(data.commentAllowed) || 0,
+    rawData: data,
   }
 }

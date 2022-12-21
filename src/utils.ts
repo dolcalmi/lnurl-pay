@@ -161,9 +161,9 @@ export const getJson = async ({
   })
 }
 
-export const sha256 = (data: string) => {
+export const sha256 = (data: string, encoding: BufferEncoding = 'hex') => {
   const sha256 = new Sha256()
-  sha256.update(Buffer.from(data, 'hex'))
+  sha256.update(Buffer.from(data, encoding))
   return Buffer.from(sha256.digestSync()).toString('hex')
 }
 
