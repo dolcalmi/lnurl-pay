@@ -13,6 +13,7 @@ import type {
   LnUrlrequestInvoiceWithServiceParamsArgs,
 } from './types'
 import { requestPayServiceParams } from './request-pay-service-params'
+import * as bolt11 from 'bolt11'
 
 export const requestInvoiceWithServiceParams = async ({
   params,
@@ -41,7 +42,9 @@ export const requestInvoiceWithServiceParams = async ({
 
   const data = await fetchGet({ url: callback, params: invoiceParams })
   const invoice = data && data.pr && data.pr.toString()
-  if (!invoice) throw new Error('Invalid pay service invoice')
+  const isValidAmountInInvoice = bolt11.decode(invoice).satoshis === tokens
+  if (!invoice || !isValidAmountInInvoice)
+    throw new Error('Invalid pay service invoice')
 
   let successAction: LNURLPaySuccessAction | undefined = undefined
   if (data.successAction) {
