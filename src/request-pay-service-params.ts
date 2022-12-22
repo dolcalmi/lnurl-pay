@@ -74,13 +74,19 @@ const parseLnUrlPayServiceResponse = (data: {
     }
   }
 
-  const domainMatch = callback.match(/(?:[A-Za-z0-9-]+\.)+[A-Za-z0-9]{1,3}/)
+  let domain
+  try {
+    domain = new URL(callback).hostname
+  } catch {
+    // fail silently and let domain remain undefined if callback is not a valid URL
+  }
+
   return {
     callback,
     fixed: min === max,
     min,
     max,
-    domain: (domainMatch && domainMatch[0]) || undefined,
+    domain,
     metadata,
     metadataHash,
     identifier,
