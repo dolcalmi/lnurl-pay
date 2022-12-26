@@ -167,12 +167,35 @@ export const sha256 = (data: string, encoding: BufferEncoding = 'hex') => {
   return Buffer.from(sha256.digestSync()).toString('hex')
 }
 
+export const decodeInvoice = (
+  invoice: string
+): (bolt11.PaymentRequestObject & { tagsObject: bolt11.TagsObject }) | null => {
+  if (!invoice) return null
+
+  try {
+    let network: bolt11.Network | undefined = undefined
+    // hack to support signet invoices, remove when it is supported in bolt11
+    if (invoice.startsWith('lntbs')) {
+      network = {
+        bech32: 'tbs',
+        pubKeyHash: 0x6f,
+        scriptHash: 0xc4,
+        validWitnessVersions: [0, 1],
+      }
+    }
+
+    return bolt11.decode(invoice, network)
+  } catch {
+    return null
+  }
+}
+
 export const getHashFromInvoice = (invoice: string): string | null => {
   if (!invoice) return null
 
   try {
-    const decoded = bolt11.decode(invoice)
-    if (!decoded.tags) return null
+    const decoded = decodeInvoice(invoice)
+    if (!decoded || !decoded.tags) return null
 
     const hashTag = decoded.tags.find(
       (value) => value.tagName === 'payment_hash'

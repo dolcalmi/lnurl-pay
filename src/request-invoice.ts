@@ -1,5 +1,6 @@
 import {
   decipherAES,
+  decodeInvoice,
   getJson,
   isOnionUrl,
   isUrl,
@@ -19,6 +20,7 @@ export const requestInvoiceWithServiceParams = async ({
   tokens,
   comment,
   onionAllowed = false,
+  validateInvoice = false,
   fetchGet = getJson,
 }: LnUrlrequestInvoiceWithServiceParamsArgs): Promise<LnUrlRequestInvoiceResponse> => {
   const { callback, commentAllowed, min, max } = params
@@ -43,6 +45,24 @@ export const requestInvoiceWithServiceParams = async ({
   const invoice = data && data.pr && data.pr.toString()
   if (!invoice) throw new Error('Invalid pay service invoice')
 
+  const decodedInvoice = decodeInvoice(invoice)
+  const descriptionHash = decodedInvoice?.tags.find(
+    (t) => t.tagName === 'purpose_commit_hash'
+  )
+  const hasValidDescriptionHash = descriptionHash
+    ? params.metadataHash === descriptionHash.data
+    : false
+  if (validateInvoice && !hasValidDescriptionHash)
+    throw new Error(`Invoice description hash doesn't match metadata hash.`)
+
+  const hasValidAmount = decodedInvoice
+    ? decodedInvoice.satoshis === tokens
+    : false
+  if (validateInvoice && !hasValidAmount)
+    throw new Error(
+      `Invalid invoice amount ${decodedInvoice?.satoshis}. Expected ${tokens}`
+    )
+
   let successAction: LNURLPaySuccessAction | undefined = undefined
   if (data.successAction) {
     const decipher = (preimage: string): string | null =>
@@ -54,6 +74,8 @@ export const requestInvoiceWithServiceParams = async ({
     params,
     invoice,
     successAction,
+    hasValidAmount,
+    hasValidDescriptionHash,
     validatePreimage: (preimage: string): boolean =>
       isValidPreimage({ invoice, preimage }),
   }
@@ -64,6 +86,7 @@ export const requestInvoice = async ({
   tokens,
   comment,
   onionAllowed = false,
+  validateInvoice = false,
   fetchGet = getJson,
 }: LnUrlRequestInvoiceArgs): Promise<LnUrlRequestInvoiceResponse> => {
   const params = await requestPayServiceParams({
@@ -76,6 +99,7 @@ export const requestInvoice = async ({
     tokens,
     comment,
     onionAllowed,
+    validateInvoice,
     fetchGet,
   })
 }
