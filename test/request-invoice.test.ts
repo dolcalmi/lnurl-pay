@@ -23,6 +23,7 @@ describe('requestInvoice', () => {
       const result = await requestInvoice({
         lnUrlOrAddress,
         tokens: toSats(tokens),
+        validateInvoice: true,
       })
       expect(result).toMatchObject({
         invoice: serviceInvoice.pr,
@@ -42,7 +43,11 @@ describe('requestInvoice', () => {
         .mockResolvedValueOnce({ data: serviceInvoice })
 
       await expect(async () => {
-        await requestInvoice({ lnUrlOrAddress, tokens: toSats(5000000) })
+        await requestInvoice({
+          lnUrlOrAddress,
+          tokens: toSats(5000000),
+          validateInvoice: true,
+        })
       }).rejects.toThrowError('Invalid amount')
     }
   )

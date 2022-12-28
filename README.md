@@ -55,6 +55,7 @@ Request an invoice for lnurl o lightning address
   tokens: <Amount in satoshis Number>
   [comment]: <Comment String>
   [onionAllowed]: <Onion url allowed Bool> // Default to false
+  [validateInvoice]: <If true validates the invoice amount and description hash Bool> // Default to false
   [fetchGet]: <Function to make a GET request Function> // Default to axios get
 }
 
@@ -71,11 +72,14 @@ Request an invoice for lnurl o lightning address
     max: <Max amount in satoshis Number>
     domain: <Callback domain String>
     metadata: <Decoded metadata Array>
+    metadataHash: <Metadata hash String>
     identifier: <Metadata identifier String>
     description: <Metadata description String>
     image: <Metadata base64 image String>
     commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
   }
+  hasValidAmount: <True if the returned invoice amount is equal to tokens param Bool>
+  hasValidDescriptionHash: <True if the returned invoice description hash is equal to metadata hash Bool>
   validatePreimage: <validates if preimage param is valid for invoice Function> // (preimage: string) => boolean
 }
 ```
@@ -111,6 +115,7 @@ Request pay service params for lnurl o lightning address (1st step)
   max: <Max amount in satoshis Number>
   domain: <Callback domain String>
   metadata: <Decoded metadata Array>
+  metadataHash: <Metadata hash String>
   identifier: <Metadata identifier String>
   description: <Metadata description String>
   image: <Metadata base64 image String>
@@ -140,6 +145,7 @@ Request an invoice for lnurl o lightning address with the given service params (
     max: <Max amount in satoshis Number>
     domain: <Callback domain String>
     metadata: <Decoded metadata Array>
+    metadataHash: <Metadata hash String>
     identifier: <Metadata identifier String>
     description: <Metadata description String>
     image: <Metadata base64 image String>
@@ -148,6 +154,7 @@ Request an invoice for lnurl o lightning address with the given service params (
   tokens: <Amount in satoshis Number>
   [comment]: <Comment String>
   [onionAllowed]: <Onion url allowed Bool> // Default to false
+  [validateInvoice]: <If true validates the invoice amount and description hash Bool> // Default to false
   [fetchGet]: <Function to make a GET request Function> // Default to axios get
 }
 
@@ -164,11 +171,14 @@ Request an invoice for lnurl o lightning address with the given service params (
     max: <Max amount in satoshis Number>
     domain: <Callback domain String>
     metadata: <Decoded metadata Array>
+    metadataHash: <Metadata hash String>
     identifier: <Metadata identifier String>
     description: <Metadata description String>
     image: <Metadata base64 image String>
     commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
   }
+  hasValidAmount: <True if the returned invoice amount is equal to tokens param>
+  hasValidDescriptionHash: <True if the returned invoice description hash is equal to metadata hash>
   validatePreimage: <validates if preimage param is valid for invoice Function> // (preimage: string) => boolean
 }
 ```

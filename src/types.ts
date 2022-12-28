@@ -50,6 +50,7 @@ export type LnUrlRequestInvoiceBaseArgs = {
   comment?: string
   onionAllowed?: boolean
   fetchGet?: (args: FetcGetArgs) => Promise<Json>
+  validateInvoice?: boolean
 }
 
 export type LnUrlrequestInvoiceWithServiceParamsArgs =
@@ -64,6 +65,8 @@ export type LnUrlRequestInvoiceArgs = LnUrlRequestInvoiceBaseArgs & {
 export type LnUrlRequestInvoiceResponse = {
   params: LnUrlPayServiceResponse
   invoice: string
+  hasValidAmount: boolean
+  hasValidDescriptionHash: boolean
   successAction?: LNURLPaySuccessAction
   validatePreimage: (preimage: string) => boolean
 }
