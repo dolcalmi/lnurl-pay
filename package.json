@@ -1,6 +1,6 @@
 {
   "name": "lnurl-pay",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "Client library for lnurl-pay and lightning address",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
