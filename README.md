@@ -17,26 +17,56 @@ yarn add lnurl-pay
 ### LNURL
 
 ```js
-import { requestInvoice } from 'lnurl-pay'
+import { requestInvoice, utils } from 'lnurl-pay'
 
-const { invoice, params, successAction, validatePreimage } =
-  await requestInvoice({
-    lnUrlOrAddress:
-      'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
-    tokens: 333, // satoshis
-  })
+const {
+  invoice,
+  params,
+  successAction,
+  hasValidAmount,
+  hasValidDescriptionHash,
+  validatePreimage,
+} = await requestInvoice({
+  lnUrlOrAddress:
+    'lnurl1dp68gurn8ghj7urp0yh8xarpva5kueewvaskcmme9e5k7tewwajkcmpdddhx7amw9akxuatjd3cz7atnv4erqgfuvv5',
+  tokens: 333, // in TS you can use utils.checkedToSats or utils.toSats
+})
 ```
 
 ### Lightning Address
 
 ```js
-import { requestInvoice } from 'lnurl-pay'
+import { requestInvoice, utils } from 'lnurl-pay'
 
-const { invoice, params, successAction, validatePreimage } =
-  await requestInvoice({
-    lnUrlOrAddress: 'user@domain.com',
-    tokens: 333, // satoshis
-  })
+const {
+  invoice,
+  params,
+  successAction,
+  hasValidAmount,
+  hasValidDescriptionHash,
+  validatePreimage,
+} = await requestInvoice({
+  lnUrlOrAddress: 'user@domain.com',
+  tokens: 333, // in TS you can use utils.checkedToSats or utils.toSats
+})
+```
+
+### Lnurlp / [LUD-17](https://github.com/lnurl/luds/blob/luds/17.md)
+
+```js
+import { requestInvoice, utils } from 'lnurl-pay'
+
+const {
+  invoice,
+  params,
+  successAction,
+  hasValidAmount,
+  hasValidDescriptionHash,
+  validatePreimage,
+} = await requestInvoice({
+  lnUrlOrAddress: 'lnurlp://domain.com/path',
+  tokens: 333, // in TS you can use utils.checkedToSats or utils.toSats
+})
 ```
 
 ## Methods
@@ -196,7 +226,9 @@ const params = await requestInvoiceWithServiceParams({
 
 - [decodeUrlOrAddress](#decodeUrlOrAddress) - Decode a bech32 encoded url (lnurl) or lightning address and return a url
 - [isLnurl](#isLnurl) - Verify if a string is a valid lnurl value
+- [isLnurlp](#isLnurlp) - Verify if a string is a valid lnurlp url
 - [parseLnUrl](#parseLnUrl) - Parse an url and return a bech32 encoded url (lnurl)
+- [parseLnurlp](#parseLnurlp) - Parse a lnurlp url and return an url with the proper protocol
 - [isLightningAddress](#isLightningAddress) - Verify if a string is a lightning adress
 - [parseLightningAddress](#parseLightningAddress) - Parse an address and return username and domain
 - [isOnionUrl](#isOnionUrl) - Verify if a string is an onion url

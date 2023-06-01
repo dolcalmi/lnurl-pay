@@ -6,7 +6,7 @@ module.exports = {
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, '../dist/umd'),
-    filename: 'index.js',
+    filename: 'lnurl-pay.js',
     library: 'LnurlPay',
     libraryTarget: 'umd',
     globalObject: 'this',
@@ -33,7 +33,6 @@ module.exports = {
       zlib: require.resolve('browserify-zlib'),
       https: require.resolve('https-browserify'),
       http: require.resolve('stream-http'),
-      url: require.resolve('url/'),
       assert: require.resolve('assert/'),
     },
   },
