@@ -51,6 +51,41 @@ export const invalidLnUrls = [
   `http://www.domain.com/pagina.html?lightning=lnurl`,
 ]
 
+export const validLnUrlps = [
+  'lnurlp://example.com',
+  'lnurlp://example.com/path',
+  'lnurlp://example.com/path?param=value',
+  'lnurlp://www.example.com',
+  'lnurlp://www.example.com/path',
+  'lnurlp://www.example.com/path?param=value',
+  'lnurlp://example.onion',
+  'lnurlp://example.onion/path',
+  'lnurlp://example.onion/path?param=value',
+  'lnurlp://example.com:443',
+  'lnurlp://example.com:443/path',
+  'lnurlp://example.com:443/path?param=value',
+  'lnurlp://www.example.com:443',
+  'lnurlp://www.example.com:443/path',
+  'lnurlp://www.example.com:443/path?param=value',
+  'lnurlp://example.onion:80',
+  'lnurlp://example.onion:80/path',
+  'lnurlp://example.onion:80/path?param=value',
+]
+
+export const invalidLnUrlps = [
+  'lnurlp',
+  'lnurlp:',
+  'lnurlp:/',
+  'lnurlp://',
+  'lnurlp://example',
+  'lnurlp://example.com?param=value',
+  'lnurlp://example.com/path#fragment',
+  'lnurlp://www.example.com?param=value',
+  'lnurlp://www.example.com/path#fragment',
+  'lnurlp://example.onion?param=value',
+  'lnurlp://example.onion/path#fragment',
+]
+
 export const validInvoices = [
   {
     invoice:

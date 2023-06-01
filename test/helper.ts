@@ -72,4 +72,41 @@ export const validPayServiceParams = [
         '83d4cacae17ccd7b18a00007d92aa8ed7129a4298ad032a544d8156357a13f37',
     },
   },
+  {
+    lnUrlOrAddress:
+      'lnurlp://pay.staging.galoy.io:443/.well-known/lnurlp/testing',
+    tokens: 10,
+    serviceParams: {
+      callback: 'https://pay.staging.galoy.io:443/.well-known/lnurlp/testing',
+      minSendable: 10000,
+      maxSendable: 10000,
+      metadata:
+        '[["text/plain","Payment to testing"],["text/identifier","testing@pay.staging.galoy.io"]]',
+      tag: 'payRequest',
+    },
+    serviceInvoice: {
+      pr: 'lntbs100n1p36njvkpp53dl62nzwkp3d7sxj5pgf5dppgkddgkprdfk823s3st4cy7vsujsshp5s02v4jhp0nxhkx9qqqraj24ga4cjnfpf3tgr9f2ymq2kx4ap8umscqzpuxqyz5vqsp5edcvjjav3k94ndjdgfrs5cr5ygne09dqryuw483xlpd7smxzp5wq9qyyssqky8c279vrlpy87wrj7vt698yltjq7jmcj0hulp09c3engvplkkykr0qm5jg83vqjf7pxw7nq0lce895eq2jyjdr7j2tlap2sh97vznsp5qydfk',
+      routes: [],
+      successAction: undefined,
+    },
+    preimage:
+      'b7a2a9d3e54566d3b8ef2ac14d828fc336bef5bf3ca60d3e8c2b207283fcfb36',
+    serviceParamsExpected: {
+      callback: 'https://pay.staging.galoy.io:443/.well-known/lnurlp/testing',
+      commentAllowed: 0,
+      description: 'Payment to testing',
+      domain: 'pay.staging.galoy.io',
+      fixed: true,
+      identifier: 'testing@pay.staging.galoy.io',
+      image: '',
+      min: 10,
+      max: 10,
+      metadata: [
+        ['text/plain', 'Payment to testing'],
+        ['text/identifier', 'testing@pay.staging.galoy.io'],
+      ],
+      metadataHash:
+        '83d4cacae17ccd7b18a00007d92aa8ed7129a4298ad032a544d8156357a13f37',
+    },
+  },
 ]

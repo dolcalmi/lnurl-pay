@@ -16,11 +16,14 @@ const LN_ADDRESS_REGEX =
 
 const ONION_REGEX = /^(http:\/\/[^/:@]+\.onion(?::\d{1,5})?)(\/.*)?$/
 
+const LNURLP_REGEX =
+  /^lnurlp:\/\/([\w-]+\.)+[\w-]+(:\d{1,5})?(\/[\w-.\/?%&=]*)?$/
+
 /**
- * Decode a bech32 encoded url (lnurl) or lightning address and return a url
+ * Decode a bech32 encoded url (lnurl), lightning address or lnurlp url and return a url
  * @method decodeUrlOrAddress
  * @param  lnUrlOrAddress string to decode
- * @return  plain url or null if is an invalid url or lightning address
+ * @return  plain url or null if is an invalid url, lightning address or lnurlp
  */
 export const decodeUrlOrAddress = (lnUrlOrAddress: string): string | null => {
   const bech32Url = parseLnUrl(lnUrlOrAddress)
@@ -36,7 +39,7 @@ export const decodeUrlOrAddress = (lnUrlOrAddress: string): string | null => {
     return `${protocol}://${domain}/.well-known/lnurlp/${username}`
   }
 
-  return null
+  return parseLnurlp(lnUrlOrAddress)
 }
 
 /**
@@ -85,6 +88,33 @@ export const parseLightningAddress = (
   if (!address) return null
   const result = LN_ADDRESS_REGEX.exec(address)
   return result ? { username: result[1], domain: result[2] } : null
+}
+
+/**
+ * Verify if a string is a lnurlp url
+ * @method isLnurlp
+ * @param  url string to validate
+ * @return  true if is a lnurlp url
+ */
+export const isLnurlp = (url: string): boolean => {
+  if (!url) return false
+  return LNURLP_REGEX.test(url)
+}
+
+/**
+ * Parse a lnurlp url and return an url with the proper protocol
+ * @method parseLnurlp
+ * @param  url string to parse
+ * @return  url (http or https) or null if is an invalid lnurlp
+ */
+export const parseLnurlp = (url: string): string | null => {
+  if (!url) return null
+
+  const parsedUrl = url.toLowerCase()
+  if (!LNURLP_REGEX.test(parsedUrl)) return null
+
+  const protocol = parsedUrl.includes('.onion') ? 'http://' : 'https://'
+  return parsedUrl.replace('lnurlp://', protocol)
 }
 
 /**
