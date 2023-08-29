@@ -7,7 +7,7 @@
   "umd:main": "dist/umd/index.js",
   "types": "dist/types/index.d.js",
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "scripts": {
     "eslint-check": "eslint \"{src,test}/**/*.ts\"",
@@ -50,7 +50,7 @@
     "url": "https://github.com/dolcalmi/lnurl-pay/issues"
   },
   "dependencies": {
-    "@aws-crypto/sha256-js": "^4.0.0",
+    "@aws-crypto/sha256-js": "^5.0.0",
     "aes-js": "^3.1.2",
     "assert": "^2.0.0",
     "axios": "^1.5.0",
