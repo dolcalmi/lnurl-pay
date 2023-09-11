@@ -52,7 +52,7 @@
   "dependencies": {
     "@aws-crypto/sha256-js": "^5.0.0",
     "aes-js": "^3.1.2",
-    "assert": "^2.0.0",
+    "assert": "^2.1.0",
     "axios": "^1.5.0",
     "base64-js": "^1.5.1",
     "bech32": "^2.0.0",
