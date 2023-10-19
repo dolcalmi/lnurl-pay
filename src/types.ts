@@ -64,6 +64,7 @@ export type LnUrlRequestInvoiceArgs = LnUrlRequestInvoiceBaseArgs & {
 
 export type LnUrlRequestInvoiceResponse = {
   params: LnUrlPayServiceResponse
+  rawData: Json
   invoice: string
   hasValidAmount: boolean
   hasValidDescriptionHash: boolean

@@ -22,6 +22,7 @@ import { requestInvoice, utils } from 'lnurl-pay'
 const {
   invoice,
   params,
+  rawData,
   successAction,
   hasValidAmount,
   hasValidDescriptionHash,
@@ -41,6 +42,7 @@ import { requestInvoice, utils } from 'lnurl-pay'
 const {
   invoice,
   params,
+  rawData,
   successAction,
   hasValidAmount,
   hasValidDescriptionHash,
@@ -59,6 +61,7 @@ import { requestInvoice, utils } from 'lnurl-pay'
 const {
   invoice,
   params,
+  rawData,
   successAction,
   hasValidAmount,
   hasValidDescriptionHash,
@@ -108,6 +111,7 @@ Request an invoice for lnurl o lightning address
     image: <Metadata base64 image String>
     commentAllowed: <Number of characters accepted for the comment query parameter Number> // Default to 0 - not allowed
   }
+  rawData: <Raw data response Object>
   hasValidAmount: <True if the returned invoice amount is equal to tokens param Bool>
   hasValidDescriptionHash: <True if the returned invoice description hash is equal to metadata hash Bool>
   validatePreimage: <validates if preimage param is valid for invoice Function> // (preimage: string) => boolean

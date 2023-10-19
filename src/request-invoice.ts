@@ -72,6 +72,7 @@ export const requestInvoiceWithServiceParams = async ({
 
   return {
     params,
+    rawData: data,
     invoice,
     successAction,
     hasValidAmount,

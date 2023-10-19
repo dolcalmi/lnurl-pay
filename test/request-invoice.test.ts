@@ -29,6 +29,7 @@ describe('requestInvoice', () => {
         invoice: serviceInvoice.pr,
         successAction: serviceInvoice.successAction,
         params: { ...serviceParamsExpected },
+        rawData: serviceInvoice,
       })
       expect(result.validatePreimage(preimage)).toBeTruthy()
     }
