@@ -1,10 +1,10 @@
 {
   "name": "lnurl-pay",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "Client library for lnurl-pay and lightning address",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",
-  "umd:main": "dist/umd/lnurl-pay.js",
+  "umd:main": "dist/umd/index.umd.js",
   "types": "dist/cjs/index.d.ts",
   "exports": {
     ".": {

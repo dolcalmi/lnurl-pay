@@ -13,8 +13,8 @@ import type {
 } from './types'
 
 const PROTOCOL_AND_DOMAIN = /^(?:\w+:)?\/\/(\S+)$/
-const LOCALHOST_DOMAIN = /^localhost[\:?\d]*(?:[^\:?\d]\S*)?$/
-const NON_LOCALHOST_DOMAIN = /^[^\s\.]+\.\S{2,}$/
+const LOCALHOST_DOMAIN = /^localhost[:?\d]*(?:[^:?\d]\S*)?$/
+const NON_LOCALHOST_DOMAIN = /^[^\s.]+\.\S{2,}$/
 
 const LNURL_REGEX =
   /^(?:http.*[&?]lightning=|lightning:)?(lnurl[0-9]{1,}[02-9ac-hj-np-z]+)/
