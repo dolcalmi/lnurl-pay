@@ -6,18 +6,23 @@ import Base64 from 'base64-js'
 import * as bolt11 from 'bolt11'
 import { Sha256 } from '@aws-crypto/sha256-js'
 
-import type { LightningAddress, LNURLPaySuccessAction, Satoshis } from './types'
+import type {
+  BufferEncoding,
+  LightningAddress,
+  LNURLPaySuccessAction,
+  Satoshis,
+} from './types'
 
 const LNURL_REGEX =
   /^(?:http.*[&?]lightning=|lightning:)?(lnurl[0-9]{1,}[02-9ac-hj-np-z]+)/
 
 const LN_ADDRESS_REGEX =
-  /^((?:[^<>()\[\]\\.,;:\s@"]+(?:\.[^<>()\[\]\\.,;:\s@"]+)*)|(?:".+"))@((?:\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(?:(?:[a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  /^((?:[^<>()[\]\\.,;:\s@"]+(?:\.[^<>()[\]\\.,;:\s@"]+)*)|(?:".+"))@((?:\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(?:(?:[a-zA-Z-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const ONION_REGEX = /^(http:\/\/[^/:@]+\.onion(?::\d{1,5})?)(\/.*)?$/
 
 const LNURLP_REGEX =
-  /^lnurlp:\/\/([\w-]+\.)+[\w-]+(:\d{1,5})?(\/[\w-.\/?%&=]*)?$/
+  /^lnurlp:\/\/([\w-]+\.)+[\w-]+(:\d{1,5})?(\/[\w-./?%&=]*)?$/
 
 /**
  * Decode a bech32 encoded url (lnurl), lightning address or lnurlp url and return a url
