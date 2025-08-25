@@ -49,7 +49,7 @@ describe('requestInvoice', () => {
           tokens: toSats(5000000),
           validateInvoice: true,
         })
-      }).rejects.toThrowError('Invalid amount')
+      }).rejects.toThrow('Invalid amount')
     }
   )
 })
