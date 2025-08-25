@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -25,28 +25,29 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
       - name: Setup .npmrc file to publish to npm
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install modules
-        run: npm install
+        run: yarn install
       - name: Build
-        run: npm run build
+        run: yarn build
       - name: Publish to npm
-        run: npm publish --access public
+        run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Setup .npmrc file to publish to GitHub Packages
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '20.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@dolcalmi'
-      - run: npm run addscope
+      - name: Add scope for GitHub Packages
+        run: jq '.name = "@dolcalmi/lnurl-pay"' package.json > package.json.tmp && mv package.json.tmp package.json
       - name: Publish to GitHub Packages
-        run: npm publish
+        run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
