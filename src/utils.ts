@@ -1,4 +1,3 @@
-import isURL from 'is-url'
 import { bech32 } from 'bech32'
 import axios from 'axios'
 import aesjs from 'aes-js'
@@ -12,6 +11,10 @@ import type {
   LNURLPaySuccessAction,
   Satoshis,
 } from './types'
+
+const PROTOCOL_AND_DOMAIN = /^(?:\w+:)?\/\/(\S+)$/
+const LOCALHOST_DOMAIN = /^localhost[\:?\d]*(?:[^\:?\d]\S*)?$/
+const NON_LOCALHOST_DOMAIN = /^[^\s\.]+\.\S{2,}$/
 
 const LNURL_REGEX =
   /^(?:http.*[&?]lightning=|lightning:)?(lnurl[0-9]{1,}[02-9ac-hj-np-z]+)/
@@ -130,11 +133,28 @@ export const parseLnurlp = (url: string): string | null => {
  */
 export const isUrl = (url: string | null): url is string => {
   if (!url) return false
-  try {
-    return isURL(url)
-  } catch {
+  if (typeof url !== 'string') {
     return false
   }
+
+  var match = url.match(PROTOCOL_AND_DOMAIN)
+  if (!match) {
+    return false
+  }
+
+  var everythingAfterProtocol = match[1]
+  if (!everythingAfterProtocol) {
+    return false
+  }
+
+  if (
+    LOCALHOST_DOMAIN.test(everythingAfterProtocol) ||
+    NON_LOCALHOST_DOMAIN.test(everythingAfterProtocol)
+  ) {
+    return true
+  }
+
+  return false
 }
 
 /**
